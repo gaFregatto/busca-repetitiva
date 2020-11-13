@@ -5,12 +5,16 @@
 
 typedef void *Board;
 
-void boardExample();
-void inputExample();
 Board createBoard(int op);
 Matrix getState(Board brd);
+void setState(Board brd, int i, int j, char move);
 int getTurn(Board brd);
+void setTurn(Board brd);
+int getEndGame(Board brd);
+void setEndGame(Board brd);
 void freeBoard(Board brd);
+void boardExample();
+void inputExample();
 void showInGame(Board brd);
 
 #endif 
