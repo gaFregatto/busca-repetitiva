@@ -64,9 +64,9 @@ void printWinner(Board brd, char w){
     board * b = brd;
     showInGame(b);
     if(w == 'x')
-        printf("\n ( →_→)     I WIN, LOOSER     ୧༼◔益◔୧ ༽ \n\n");
+        printf("\n ( →_→)     I WON, AS ALWAYS     ୧༼◔益◔୧ ༽ \n\n");
     else if(w == 'o')
-        printf("\n ( →_→)     YOU WIN, BUT I KNOW YOU CHEATED     ༼ง=ಠ益ಠ=༽ง \n\n");
+        printf("\n ( →_→)     YOU WON, BUT I KNOW YOU CHEATED     ༼ง=ಠ益ಠ=༽ง \n\n");
     setEndGame(b);
 }
 
