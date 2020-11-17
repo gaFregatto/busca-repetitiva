@@ -9,6 +9,7 @@ Board createBoard(int op);
 Matrix getState(Board brd);
 void setState(Board brd, int i, int j, char move);
 int getTurn(Board brd);
+int getMarked(Board brd);
 void setTurn(Board brd);
 int getEndGame(Board brd);
 void setEndGame(Board brd);

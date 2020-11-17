@@ -1,9 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "board.h"
+#include "tree.h"
 
 void menu(int *x);
 void startGame(int *x);
+
+// int main(){
+//     Tree t = newTree();
+//     return 0;
+// }
 
 int main(int argc, char *argv[]){
     int op = 0;
@@ -16,7 +22,7 @@ void menu(int *x){
     boardExample();
     inputExample();
     printf("\n#### MENU ####\nPress to choose:\n1. Player First\n2. IA First\n> ");
-    scanf("%d", &(*x));
+    scanf(" %d", &(*x));
 }
 
 void startGame(int *x){
@@ -26,13 +32,13 @@ void startGame(int *x){
     char move, posic;
 
     while(!getEndGame(b)){
-        if(getTurn(b)) printf("\n(;´༎ຶД༎ຶ`) JOGUE HUMANO (つ◉益◉)つ\n");
-        else printf("\n(つ´∀`)つ MINHA VEZ ლ(・ヮ・ლ)\n");
+        if(getTurn(b)) printf("\n(;´༎ຶД༎ຶ`) PLAY HUMAN (つ◉益◉)つ\n");
+        else printf("\n(つ´∀`)つ MY TURN ლ(・ヮ・ლ)\n");
 
         inputExample();
         showInGame(b);
-        printf("\nDigite o número da posição desejada: ");
-        scanf("%c", &posic);
+        printf("\nEnter the desired position number: ");
+        scanf(" %c", &posic);
 
         if(getTurn(b)) move = 'o';
         else move = 'x';
@@ -93,11 +99,11 @@ void startGame(int *x){
             setState(b, i, j, move);
             break;
         case '0':
-            printf("\nFechando programa..\n");
+            printf(" (ʘ ل͟├┬┴┬┴┬┴┬┴┬┴    See you next time..           \n\n");
             setEndGame(b);
             break;
         default:
-            printf("\nERR: Opção inválida. Digite um número de 0 a 9.\n");
+            printf("\nERR: Invalid input. Type a number between 0 and 9.\n");
         }
     }
     freeBoard(b);

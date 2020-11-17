@@ -5,10 +5,17 @@
 #define LIN 3
 #define COL 3
 
+void checkWinner(Board brd);
+char rowCrossed(Matrix m);
+char columnCrossed(Matrix m);
+char diagonalCrossed(Matrix m);
+void printWinner(Board brd, char w);
+
 typedef struct _board {
     Matrix state;
     int turn; 
     int endGame;
+    int marked;
 } board;
 
 Board createBoard(int op){
@@ -21,6 +28,8 @@ Board createBoard(int op){
     else b->turn = 0;
 
     b->endGame = 0;
+
+    b->marked = 0;
 
     return b;
 }
@@ -51,6 +60,16 @@ char diagonalCrossed(Matrix m){
     return ' ';
 }
 
+void printWinner(Board brd, char w){
+    board * b = brd;
+    showInGame(b);
+    if(w == 'x')
+        printf("\n ( →_→)     I WIN, LOOSER     ୧༼◔益◔୧ ༽ \n\n");
+    else if(w == 'o')
+        printf("\n ( →_→)     YOU WIN, BUT I KNOW YOU CHEATED     ༼ง=ಠ益ಠ=༽ง \n\n");
+    setEndGame(b);
+}
+
 void checkWinner(Board brd){
     board *b = brd;
     Matrix m = getState(b);
@@ -60,26 +79,15 @@ void checkWinner(Board brd){
     c = columnCrossed(m);
     d = diagonalCrossed(m);
 
-    if(r != ' '){
+    if(r != ' ')
+        printWinner(b, r);
+    else if(c != ' ')
+        printWinner(b, c);
+    else if(d != ' ')
+        printWinner(b, d);
+    else if(getMarked(b) == 9){
         showInGame(b);
-        if(r == 'o')
-            printf("\nHUMANO VENCEU\n");
-        else if(r == 'x')
-            printf("\nMAQUINA VENCEU\n");
-        setEndGame(b);
-    }else if(c != ' '){ 
-        showInGame(b);
-        if(c == 'o')
-            printf("\nHUMANO VENCEU\n");
-        else if(c == 'x')
-            printf("\nMAQUINA VENCEU\n");
-        setEndGame(b);
-    }else if(d != ' '){
-        showInGame(b);
-        if(d == 'o')
-            printf("\nHUMANO VENCEU\n");
-        else if(d == 'x')
-            printf("\nMAQUINA VENCEU\n");
+        printf("\n ( →_→)   YOU GOT LUCKY THIS TIME HUMAN, WE TIED   (ノಠ益ಠ) \n\n");
         setEndGame(b);
     }
 }
@@ -95,6 +103,7 @@ void setState(Board brd, int i, int j, char move){
 
     if(m[i][j] == ' '){
         m[i][j] = move;
+        b->marked += 1;
         setTurn(b);
     }else{
         printf("ERR: Posição já ocupada, insira novamente em uma posição vazia.");
@@ -107,6 +116,12 @@ int getTurn(Board brd){
     board *b = brd;
     return b->turn;
 }
+
+int getMarked(Board brd){
+    board *b = brd;
+    return b->marked;
+}
+
 
 void setTurn(Board brd){
     board *b = brd;
