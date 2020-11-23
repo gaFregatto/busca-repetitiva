@@ -5,7 +5,7 @@
 Matrix newMatrix(int i, int j){
     int k, x, y;
     Matrix m = malloc(i * sizeof(char*));
-    m[0] = malloc(i * j *sizeof(char));
+    m[0] = malloc(i * j * sizeof(char));
 
     for(k=1; k<i; k++){
         m[k] = m[0] + k * j;

@@ -10,6 +10,10 @@ char rowCrossed(Matrix m);
 char columnCrossed(Matrix m);
 char diagonalCrossed(Matrix m);
 void printWinner(Board brd, char w);
+char setMove(int i, int j);
+void clearState(Board brd, int i, int j);
+void setStateAux(Board brd, int i, int j, char move);
+int checkWinnerMinimax(Board brd);
 
 typedef struct _board {
     Matrix state;
@@ -64,7 +68,7 @@ void printWinner(Board brd, char w){
     board * b = brd;
     showInGame(b);
     if(w == 'x')
-        printf("\n ( →_→)     I WON, AS ALWAYS     ୧༼◔益◔୧ ༽ \n\n");
+        printf("\n ( →_→)     I WON, AS ALWAYS     ୧༼=◔益◔=୧ ༽ \n\n");
     else if(w == 'o')
         printf("\n ( →_→)     YOU WON, BUT I KNOW YOU CHEATED     ༼ง=ಠ益ಠ=༽ง \n\n");
     setEndGame(b);
@@ -161,4 +165,144 @@ void showInGame(Board brd){
     b->state[0][0], b->state[0][1], b->state[0][2], 
     b->state[1][0], b->state[1][1], b->state[1][2], 
     b->state[2][0], b->state[2][1], b->state[2][2]);
+}
+
+
+// ################ IA IMPLEMENTATION ################
+
+char findRandomMove(){
+    int r = (rand() % 8) + 1;
+    if(r == 1)  return '1';
+    if(r == 2)  return '2';
+    if(r == 3)  return '3';
+    if(r == 4)  return '4';
+    if(r == 5)  return '5';
+    if(r == 6)  return '6';
+    if(r == 7)  return '7';
+    if(r == 8)  return '8';
+    if(r == 9)  return '9';
+}
+
+char findBestMove(Board brd){
+    board *b = brd;
+    Matrix m = getState(b);
+    int bestScore = -__INT_MAX__;
+    int score;
+    int x, y;
+    char bestMove = ' ';
+
+    for(int i=0; i<LIN; i++){
+        for(int j=0; j<COL; j++){
+            if(m[i][j] == ' '){
+                setStateAux(b, i, j, 'x');
+                score = minimax(b, getMarked(b), getTurn(b));
+                clearState(b, i, j);
+                if(score > bestScore){
+                    bestScore = score;
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+    }
+    return setMove(x, y);
+}
+
+int minimax(Board brd, int depth, int isMaximazing){
+    board *b = brd;
+    Matrix m = getState(b);
+    int result;
+    int score;
+
+    result = checkWinnerMinimax(b);
+    if(result != -5){
+        score = result;
+        return score;
+    }
+
+    if(isMaximazing){
+        int bestScore = -__INT_MAX__;
+        for(int i=0; i<LIN; i++){
+            for(int j=0; j<COL; j++){
+                if(m[i][j] == ' '){
+                    setStateAux(b, i, j, 'x');
+                    score = minimax(b, depth + 1, 0);
+                    clearState(b, i, j);
+                    if(score > bestScore)
+                        bestScore = score;                    
+                }
+            }
+        }
+        return bestScore;
+    }else{
+        int bestScore = __INT_MAX__;
+        for(int i=0; i<LIN; i++){
+            for(int j=0; j<COL; j++){
+                if(m[i][j] == ' '){
+                    setStateAux(b, i, j, 'o');
+                    score = minimax(b, depth + 1, 1);
+                    clearState(b, i, j);
+                    if(score < bestScore)
+                        bestScore = score;                    
+                }
+            }
+        }
+        return bestScore;
+    }
+}
+
+
+// ################ PRIVATE FUNCTIONS ################
+
+int checkWinnerMinimax(Board brd){
+    board *b = brd;
+    Matrix m = getState(b);
+    char r = ' ', c = ' ', d = ' ';
+
+    r = rowCrossed(m);
+    c = columnCrossed(m);
+    d = diagonalCrossed(m);
+
+    if(r != ' '){
+        if(r == 'x') return 1;
+        else return -1;
+    }
+    else if(c != ' '){
+        if(c == 'x') return 1;
+        else return -1;
+    }
+    else if(d != ' '){
+        if(d == 'x') return 1;
+        else return -1;
+    }
+    else if(getMarked(b) == 9)
+        return 0;
+    else 
+        return -5;
+}
+
+char setMove(int i, int j){
+    if(i == 2 && j == 0)    return '1';
+    if(i == 2 && j == 1)    return '2';
+    if(i == 2 && j == 2)    return '3';
+    if(i == 1 && j == 0)    return '4';
+    if(i == 1 && j == 1)    return '5';
+    if(i == 1 && j == 2)    return '6';
+    if(i == 0 && j == 0)    return '7';
+    if(i == 0 && j == 1)    return '8';
+    if(i == 0 && j == 2)    return '9';
+}
+
+void setStateAux(Board brd, int i, int j, char move){
+    board *b = brd;
+    Matrix m = getState(b);
+    m[i][j] = move;
+    b->marked += 1;
+}
+
+void clearState(Board brd, int i, int j){
+    board *b = brd;
+    Matrix m = getState(b);
+    m[i][j] = ' ';
+    b->marked -= 1;
 }

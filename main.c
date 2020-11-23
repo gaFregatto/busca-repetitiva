@@ -1,15 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "board.h"
-#include "tree.h"
 
 void menu(int *x);
 void startGame(int *x);
-
-// int main(){
-//     Tree t = newTree();
-//     return 0;
-// }
 
 int main(int argc, char *argv[]){
     int op = 0;
@@ -37,11 +31,15 @@ void startGame(int *x){
 
         inputExample();
         showInGame(b);
-        printf("\nEnter the desired position number: ");
-        scanf(" %c", &posic);
 
-        if(getTurn(b)) move = 'o';
-        else move = 'x';
+        if(getTurn(b)){
+            printf("\nEnter the desired position number: ");
+            scanf(" %c", &posic);
+            move = 'o';
+        }else{
+            move = 'x'; 
+            posic = findBestMove(b);
+        } 
 
 
         switch (posic){

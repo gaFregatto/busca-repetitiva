@@ -17,5 +17,8 @@ void freeBoard(Board brd);
 void boardExample();
 void inputExample();
 void showInGame(Board brd);
+int minimax(Board brd, int depth, int isMaximazing);
+char findBestMove(Board brd);
+char findRandomMove();
 
 #endif 
