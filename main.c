@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "board.h"
 
+// 
 void menu(int *x);
 void startGame(int *x);
 
