@@ -2,13 +2,15 @@
 #include <stdio.h>
 #include "board.h"
 
-// 
+
 void menu(int *x);
 void startGame(int *x);
 
 int main(int argc, char *argv[]){
     int op = 0;
     menu(&op);
+    // Depois de saber quem inicia a jogada,
+    // montar arvore para min max
     startGame(&op);
     return 0;
 }

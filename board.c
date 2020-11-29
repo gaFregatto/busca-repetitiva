@@ -205,7 +205,7 @@ char findBestMove(Board brd){
             }
         }
     }
-    return setMove(x, y);
+    return  (x, y);
 }
 
 int minimax(Board brd, int depth, int isMaximazing){
