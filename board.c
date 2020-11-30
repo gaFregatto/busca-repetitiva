@@ -13,7 +13,7 @@ void printWinner(Board brd, char w);
 char setMove(int i, int j);
 void clearState(Board brd, int i, int j);
 void setStateAux(Board brd, int i, int j, char move);
-int checkWinnerMinimax(Board brd);
+int checkWinnerMinimax(Board brd, int depth);
 
 typedef struct _board {
     Matrix state;
@@ -214,8 +214,8 @@ int minimax(Board brd, int depth, int isMaximazing){
     int result;
     int score;
 
-    result = checkWinnerMinimax(b);
-    if(result != -5){
+    result = checkWinnerMinimax(b, depth);
+    if(result != -73){
         score = result;
         return score;
     }
@@ -254,7 +254,7 @@ int minimax(Board brd, int depth, int isMaximazing){
 
 // ################ PRIVATE FUNCTIONS ################
 
-int checkWinnerMinimax(Board brd){
+int checkWinnerMinimax(Board brd, int depth){
     board *b = brd;
     Matrix m = getState(b);
     char r = ' ', c = ' ', d = ' ';
@@ -264,21 +264,21 @@ int checkWinnerMinimax(Board brd){
     d = diagonalCrossed(m);
 
     if(r != ' '){
-        if(r == 'x') return 1;
-        else return -1;
+        if(r == 'x') return 1 * (9 - depth);
+        else return -1 * (9 - depth);
     }
     else if(c != ' '){
-        if(c == 'x') return 1;
-        else return -1;
+        if(c == 'x') return 1 * (9 - depth);
+        else return -1 * (9 - depth);
     }
     else if(d != ' '){
-        if(d == 'x') return 1;
-        else return -1;
+        if(d == 'x') return 1 * (9 - depth);
+        else return -1 * (9 - depth);
     }
     else if(getMarked(b) == 9)
         return 0;
     else 
-        return -5;
+        return -73;
 }
 
 char setMove(int i, int j){
