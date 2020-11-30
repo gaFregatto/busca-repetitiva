@@ -1,21 +1,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "board.h"
+#include "list.h"
 
 void menu(int *x);
 void startGame(int *x);
 
+// int main(int argc, char *argv[]){
+//     int op = 0;
+//     menu(&op);
+//     startGame(&op);
+//     return 0;
+// }
+
 int main(int argc, char *argv[]){
     int op = 0;
     menu(&op);
-    startGame(&op);
+    List l = newList(showInGame, freeBoard);
+    Board b = createBoard(op);
+    insertList(l, b);
+    printList(l);
+    freeList(l);
     return 0;
 }
-
-// int main(int argc, char *argv[]){
-
-//     return 0;
-// }
 
 void menu(int *x){
     boardExample();
